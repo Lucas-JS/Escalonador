@@ -1,5 +1,5 @@
 public class Processo {
-   public String pid;
+    public String pid;
     public int duracao;
     public int chegada;
     public int opIO [];
@@ -13,5 +13,3 @@ public class Processo {
         this.cpuUsing = 0;
     }
 }
-    
-
