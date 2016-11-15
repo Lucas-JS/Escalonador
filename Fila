@@ -37,7 +37,14 @@ public class Fila {
     }
     
     public String print(){
-        return null;
-    }
+        String saida = "";
+        No aux = inicio;
+        for(int i = 0; i<size;i++){
+            saida += aux.valor.pid +"("+aux.valor.duracao+") ";
+            aux = aux.proximo;
+        }
+        return saida;
+        }
+        
 }
 
