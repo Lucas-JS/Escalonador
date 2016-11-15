@@ -2,4 +2,34 @@
   º criar o escalonador.
   º Criar o modelo de thread.
   º criar estrutura da Fila
+  
+  PROCESSO
+criar objeto processo:
+
+cada processo deve conter uma ID, ex P1, P2, P3..
+
+deve conter o tempo de chegada do processo, EX  P1= tempo de chegada 3..
+
+deve conter o tempo de espera de cada processo, que sera contado a partir de sua chegada, e somado ao tempo que o processo permaneceu na fila
+
+deve conter um "contexto", que é o tempo de processamento necessário, ex P1(10), p2(15)..
+
+TROCA DE CONTEXTO
+um processo pode conter operaçoes de IO, caso contenha deve ser estipulado em qual tempo do processo essa operaçao irá ocorrer; 
+ex se P1 tem um contexto 10, e operaçao de IO nos instantes 3 e 6, quando o processo estiver na cpu e chegar na operaçao de IO ele ira para a fila com o restante do contexto
+
+QUANTUM: o escalonador dará uma fatia de tempo chamada quantum, por ex QUANTUM = 5,  quando um processo sair da fila para a cpu ele tera um quantum de 5 independente do seu contexto, 
+o restante do contexto será salvo e voltará para o final da fila.
+caso um processo tenha um contexto menor que o quantum disponivel, ele utilizara somente o tempo necessario para encerrar seu processamento, evitando desperdicio de cpu.
+
+PREEMPÇAO: caso ocorra de um novo processo chegar no mesmo instante em que um processa utilizou seu quantum, o processo que estava na cpu terá prioridade na entrada da fila.
+
+FILA
+usara o conceito FIFO, o primeiro que chega é o primeiro que sai.
+
+
+
+
+
+
 */
