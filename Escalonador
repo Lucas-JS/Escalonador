@@ -7,7 +7,7 @@ import java.lang.Thread;
  */
 public class EscalonadorRoundRobin {
 
-    public static void main(String [] args)throws InterruptedException{
+public static void main(String [] args)throws InterruptedException{
         int quantum = 4;
         int quantumCont = 0;
         int cont= 0;
@@ -30,20 +30,24 @@ public class EscalonadorRoundRobin {
         
         qtdProcessos = ps.length;
         
-        System.out.println("Começo");
+        System.out.println("*************************************");
+        System.out.println("*******Escalonador Round-Robin*******");
+        System.out.println("*************************************");
+        saidal1 = "Tempo "+cont;
+        saidal2 = "FILA: ";
+        saidal3 = "CPU: ";
         
+        for(int i = 0;i<ps.length;i++){
+            if(ps[i].chegada == cont){
+                fila.equeue(ps[i]);
+                saidal1 +=" Chegada do processo " + ps[i].pid;
+            }
+        }
         do{
-            saidal1 = "Tempo "+cont;
-            saidal2 = "FILA: ";
-            saidal3 = "CPU: ";
+
             //troca de contexto
             //uma thread pra add eles a fila baseada no tempo
-            for(int i = 0;i<ps.length;i++){
-                if(ps[i].chegada == cont){
-                    fila.equeue(ps[i]);
-                    saidal1 +=" Chegada do processo " + ps[i].pid;
-                }
-            }
+
                         //ao utilizar a cpu
             if(cpuP==null){
                     cpuP = fila.dequeue();
@@ -55,39 +59,55 @@ public class EscalonadorRoundRobin {
             System.out.println(saidal2);
             System.out.println(saidal3);
             System.out.println(" ");
+            
             Thread.sleep(1000);
             cont++;
-
+            
+            saidal1 = "Tempo "+cont;
+            saidal2 = "FILA: ";
+            saidal3 = "CPU: ";
             
             if(cpuP!=null){
                 cpuP.duracao-=1;
                 cpuP.cpuUsing++;
                 quantumCont++;
                 if(cpuP.duracao == 0){
+                    saidal1+=" Fim do processo "+cpuP.pid;
                     cpuP = fila.dequeue();
                     quantumCont = 0;
                     qtdProcessos--;
                 }
-                if(quantumCont == quantum){
+                else if(quantumCont == quantum){
+                    saidal1 += " Fim do quantum "+cpuP.pid;
                     quantumCont = 0;
                     fila.equeue(cpuP);
                     cpuP = fila.dequeue();
                 }
+                else {
+                    for(int i = 0;i<ps.length;i++){
+                        if(ps[i].chegada == cont){
+                            fila.equeue(ps[i]);
+                            saidal1 +=" Chegada do processo " + ps[i].pid;
+                        }
+                    }
+                    if(cpuP.opIO!=null){
+                        for(int i = 0; i< cpuP.opIO.length;i++){
+                            if(cpuP.opIO[i] == cpuP.cpuUsing){
+                                saidal1 += " Operacao de IO " + cpuP.pid;
+                                fila.equeue(cpuP);
 
-                for(int i = 0; i< cpuP.opIO.length;i++){
-                    if(cpuP.opIO[i] == cpuP.cpuUsing){
-                        saidal1 += " Operacao de IO " + cpuP.pid;
-                        fila.equeue(cpuP);
-                        cpuP = fila.dequeue();
-                        quantumCont = 0;
-                        break;
+                                cpuP = fila.dequeue();
+                                quantumCont = 0;
+                                break;
+                            }
+                        }
                     }
                 }
             }
-            
-            //contar tempo
 
         }while(qtdProcessos!=0);
-        System.out.println("Encerrado");
+        System.out.println("*************************************");
+        System.out.println("Encerrando simulação de escalonamento");
+        System.out.println("*************************************");
     }
 }
